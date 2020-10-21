@@ -158,6 +158,7 @@
 
 .navbar-default {
     background-color: $white-navbar;
+    background-color: rgb(255, 190, 201);
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   
     .navbar-nav{
@@ -275,9 +276,11 @@
     margin-top: 19px;
     margin-bottom: 19px;
     border: $none;
+    background-color: transparent;
     
     .icon-bar {
-        background-color: $white-color;
+        //background-color: $white-color;
+        background-color: transparent;
     }
      .navbar-collapse, 
      .navbar-form {
@@ -286,6 +289,7 @@
     
     &.navbar-default .navbar-toggle:hover,
     &.navbar-default .navbar-toggle:focus {
+        background-color: black;
         background-color: transparent;
     }
 }
