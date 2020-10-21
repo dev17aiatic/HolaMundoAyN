@@ -1,72 +1,77 @@
-<nav class="navbar navbar-expand-lg bg-primary fixed-top navbar-transparent" color-on-scroll="500">
-    <div class="container">
-      <div class="dropdown button-dropdown">
-        <div ngbDropdown>
-          <a class="dropdown-toggle" ngbDropdownToggle>
-              <span class="button-bar"></span>
-              <span class="button-bar"></span>
-              <span class="button-bar"></span>
-          </a>
-           <div ngbDropdownMenu>
-             <a class="dropdown-header">Dropdown header</a>
-             <a class="dropdown-item" href="#">Action</a>
-             <a class="dropdown-item" href="#">Another action</a>
-             <a class="dropdown-item" href="#">Something else here</a>
-             <div class="dropdown-divider"></div>
-             <a class="dropdown-item" href="#">Separated link</a>
-             <div class="dropdown-divider"></div>
-             <a class="dropdown-item" href="#">One more separated link</a>
-           </div>
-         </div>
-      </div>
-        <div class="navbar-translate">
-            <a class="navbar-brand" [routerLink]="['/index']" placement="bottom" ngbTooltip="Designed by Invision. Coded by Creative Tim">
-                Now Ui Kit
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation" (click)="sidebarToggle()">
-                <span class="navbar-toggler-bar bar1"></span>
-                <span class="navbar-toggler-bar bar2"></span>
-                <span class="navbar-toggler-bar bar3"></span>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" (click)="sidebarToggle()">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
             </button>
+            <a class="navbar-brand" href="#" >{{getTitle()}}</a>
         </div>
-        <div class="collapse navbar-collapse" data-nav-image="assets/img/blurred-image-1.jpg" data-color="orange">
-            <ul class="navbar-nav ml-auto">
-              <li class="nav-item">
-                  <a class="nav-link" href="https://www.creative-tim.com/product/now-ui-kit-angular" target="_blank">
-                      <i class="now-ui-icons arrows-1_cloud-download-93"></i>
-                      <p>Download</p>
-                  </a>
-              </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="https://creativetimofficial.github.io/now-ui-kit-angular/documentation/tutorial" target="_blank">
-                      <i class="now-ui-icons files_paper"></i>
-                      <p>Documentation</p>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-left">
+                <li>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-dashboard"></i>
+                        <p class="hidden-lg hidden-md">{{getTitle()}}</p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link btn btn-neutral" href="https://www.creative-tim.com/product/now-ui-kit-pro-angular" target="_blank">
-                        <i class="now-ui-icons arrows-1_share-66"></i>
-                        <p>Upgrade to PRO</p>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-globe"></i>
+                        <b class="caret"></b>
+                        <span class="notification hidden-sm hidden-xs">5</span>
+                        <p class="hidden-lg hidden-md">
+                            5 Notifications
+                            <b class="caret"></b>
+                        </p>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Notification 1</a></li>
+                        <li><a href="#">Notification 2</a></li>
+                        <li><a href="#">Notification 3</a></li>
+                        <li><a href="#">Notification 4</a></li>
+                        <li><a href="#">Another notification</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fa fa-search"></i>
+                        <p class="hidden-lg hidden-md">Search</p>
                     </a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link" rel="tooltip" title="Follow us on Twitter" data-placement="bottom" href="https://twitter.com/CreativeTim" target="_blank">
-                    <i class="fab fa-twitter"></i>
-                    <p class="d-lg-none d-xl-none">Twitter</p>
-                  </a>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#">
+                        <p>Account</p>
+                    </a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link" rel="tooltip" title="Like us on Facebook" data-placement="bottom" href="https://www.facebook.com/CreativeTim" target="_blank">
-                    <i class="fab fa-facebook-square"></i>
-                    <p class="d-lg-none d-xl-none">Facebook</p>
-                  </a>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <p>
+                            Dropdown
+                            <b class="caret"></b>
+                        </p>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Separated link</a></li>
+                    </ul>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link" rel="tooltip" title="Follow us on Instagram" data-placement="bottom" href="https://www.instagram.com/CreativeTimOfficial" target="_blank">
-                    <i class="fab fa-instagram"></i>
-                    <p class="d-lg-none d-xl-none">Instagram</p>
-                  </a>
+                <li>
+                    <a href="#">
+                        <p>Log out</p>
+                    </a>
                 </li>
+                <li class="separator hidden-lg hidden-md"></li>
             </ul>
         </div>
     </div>
