@@ -238,14 +238,17 @@ namespace appAngular.Migrations
 
                     b.HasIndex("IdentityId");
 
-                    b.ToTable("JobSeekers");
+                    b.ToTable("JobSeekercs");
                 });
 
             modelBuilder.Entity("appAngular.Identity.AppUser", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("AppUser");

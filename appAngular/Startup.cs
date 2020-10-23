@@ -1,5 +1,7 @@
 using appAngular.Data;
 using appAngular.Identity;
+
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -10,10 +12,35 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using FluentValidation.AspNetCore;
+using AutoMapper;
+
+//using DotNetGigs.Auth;
+//using DotNetGigs.Models;
+
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.Net;
+using appAngular.helpers;
+using Microsoft.AspNetCore.Diagnostics;
+//using DotNetGigs.Extensions;
+using Microsoft.AspNetCore.Http;
+using appAngular.viewIdentity;
+using Microsoft.AspNetCore.Identity;
+
+//JWT
+using appAngular.models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+
 namespace appAngular
 {
     public class Startup
     {
+        private const string SecretKey = "iNivDmHLpUA223sqsfhqGbMRdRj1PVkH"; // todo: get this from somewhere secure
+        private readonly SymmetricSecurityKey _signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SecretKey));
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -32,11 +59,42 @@ namespace appAngular
             });
 
 
-            services.AddDbContext<ApplicationDbContext>(options => 
+            services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                    Configuration.GetConnectionString("DefaultConnection"),
+                    b => b.MigrationsAssembly("appAngular")));
 
             //services.AddIdentity<AppUser, JobSeekercs>();
+            services.AddIdentity < AppUser, IdentityRole>
+                (o =>
+                    {
+                    // configure identity options
+                    o.Password.RequireDigit = false;
+                    o.Password.RequireLowercase = false;
+                    o.Password.RequireUppercase = false;
+                    o.Password.RequireNonAlphanumeric = false;
+                    o.Password.RequiredLength = 6;
+                    })
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+    
+            services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
+
+            services.AddAutoMapper(typeof(Startup));
+
+            //JWT TOKEN
+            // jwt wire up
+            // Get options from app settings
+            var jwtAppSettingOptions = Configuration.GetSection(nameof(JwtIssuerOptions));
+
+            // Configure JwtIssuerOptions
+            services.Configure<JwtIssuerOptions>(options =>
+            {
+            options.Issuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
+            options.Audience = jwtAppSettingOptions[nameof(JwtIssuerOptions.Audience)];
+            options.SigningCredentials = new SigningCredentials(_signingKey, SecurityAlgorithms.HmacSha256);
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -81,6 +139,34 @@ namespace appAngular
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
+
+            var jwtAppSettingOptions = Configuration.GetSection(nameof(JwtIssuerOptions));
+            var tokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)],
+
+                    ValidateAudience = true,
+                    ValidAudience = jwtAppSettingOptions[nameof(JwtIssuerOptions.Audience)],
+
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = _signingKey,
+
+                    RequireExpirationTime = false,
+                    ValidateLifetime = false,
+                    //ClockSkew = TimeSpan.Zero
+                };
+          
+            app.UseJwtBearerAuthentication(new JwtBearerOptions
+            {
+            AutomaticAuthenticate = true,
+            AutomaticChallenge = true,
+            TokenValidationParameters = tokenValidationParameters
+            });
+
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+            //app.UseMvc();
            
         }
     }

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace appAngular.Migrations
 {
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -41,7 +41,8 @@ namespace appAngular.Migrations
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
                     Discriminator = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(nullable: true)
+                    FirstName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -155,7 +156,7 @@ namespace appAngular.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "JobSeekers",
+                name: "JobSeekercs",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -165,9 +166,9 @@ namespace appAngular.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_JobSeekers", x => x.Id);
+                    table.PrimaryKey("PK_JobSeekercs", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_JobSeekers_AspNetUsers_IdentityId",
+                        name: "FK_JobSeekercs_AspNetUsers_IdentityId",
                         column: x => x.IdentityId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -214,8 +215,8 @@ namespace appAngular.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_JobSeekers_IdentityId",
-                table: "JobSeekers",
+                name: "IX_JobSeekercs_IdentityId",
+                table: "JobSeekercs",
                 column: "IdentityId");
         }
 
@@ -237,7 +238,7 @@ namespace appAngular.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "JobSeekers");
+                name: "JobSeekercs");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

@@ -10,8 +10,8 @@ using appAngular.Data;
 namespace appAngular.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201022194053_initial")]
-    partial class initial
+    [Migration("20201023165916_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -240,14 +240,17 @@ namespace appAngular.Migrations
 
                     b.HasIndex("IdentityId");
 
-                    b.ToTable("JobSeekers");
+                    b.ToTable("JobSeekercs");
                 });
 
             modelBuilder.Entity("appAngular.Identity.AppUser", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("AppUser");

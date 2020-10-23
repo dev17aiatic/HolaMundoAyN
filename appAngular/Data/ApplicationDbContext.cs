@@ -12,8 +12,7 @@ namespace appAngular.Data
         {
         }
 
-        public DbSet<JobSeekercs> JobSeekers { get; set; }
-        public DbSet<AppUser> Appuser { get; set; }
+        public DbSet<JobSeekercs> JobSeekercs { get; set; }        
 
     }
 }
