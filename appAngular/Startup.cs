@@ -30,25 +30,76 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using appAngular.viewIdentity;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 //JWT
-using appAngular.models;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+
 
 namespace appAngular
 {
     public class Startup
+
+
     {
         private const string SecretKey = "iNivDmHLpUA223sqsfhqGbMRdRj1PVkH"; // todo: get this from somewhere secure
         private readonly SymmetricSecurityKey _signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SecretKey));
+
+
+
+
+
+
+
+        //-----------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
+
+        //---------------------------
+
+
+        public Startup(IHostEnvironment env)
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddEnvironmentVariables();
+            Configuration = builder.Build();
+        }
+
+
+
+        //--------------------------------------------------
+
+
+
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
+
+
+
+
+
+
+
+        //-----------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
@@ -65,37 +116,76 @@ namespace appAngular
                     b => b.MigrationsAssembly("appAngular")));
 
             //services.AddIdentity<AppUser, JobSeekercs>();
-            services.AddIdentity < AppUser, IdentityRole>
+
+            services.AddMvc(opt => opt.EnableEndpointRouting = false);
+
+
+
+            services.AddIdentity<AppUser, IdentityRole>
                 (o =>
                     {
-                    // configure identity options
-                    o.Password.RequireDigit = false;
-                    o.Password.RequireLowercase = false;
-                    o.Password.RequireUppercase = false;
-                    o.Password.RequireNonAlphanumeric = false;
-                    o.Password.RequiredLength = 6;
+                        // configure identity options
+                        o.Password.RequireDigit = false;
+                        o.Password.RequireLowercase = false;
+                        o.Password.RequireUppercase = false;
+                        o.Password.RequireNonAlphanumeric = false;
+                        o.Password.RequiredLength = 6;
                     })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
-    
+
             services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
 
             services.AddAutoMapper(typeof(Startup));
 
             //JWT TOKEN
-            // jwt wire up
-            // Get options from app settings
-            var jwtAppSettingOptions = Configuration.GetSection(nameof(JwtIssuerOptions));
-
-            // Configure JwtIssuerOptions
-            services.Configure<JwtIssuerOptions>(options =>
+            var _signingkey = Encoding.ASCII.GetBytes(Configuration.GetValue<string>("SecretKey"));
+            services.AddAuthentication(res =>
             {
-            options.Issuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
-            options.Audience = jwtAppSettingOptions[nameof(JwtIssuerOptions.Audience)];
-            options.SigningCredentials = new SigningCredentials(_signingKey, SecurityAlgorithms.HmacSha256);
+                res.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                res.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }
+            ).AddJwtBearer(resb => {
+                resb.RequireHttpsMetadata = false;
+                resb.SaveToken = true;
+                resb.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(_signingkey),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
             });
 
+            /*services.AddSingleton<IJWTFactory, JWTFactory>();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("ApiUser", policy => policy.RequireClaim(Constants.Strings.JwtClaimIdentifiers.Rol, Constants.Strings.JwtClaims.ApiAccess));
+            });*/
+
+
+            services.AddMvc();
+            //app.UseDefaultFiles();
+            //app.UseStaticFiles();
+            //app.UseMvc();
+           
         }
+
+
+
+
+
+
+
+        //-----------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -140,34 +230,19 @@ namespace appAngular
                 }
             });
 
-            var jwtAppSettingOptions = Configuration.GetSection(nameof(JwtIssuerOptions));
-            var tokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)],
 
-                    ValidateAudience = true,
-                    ValidAudience = jwtAppSettingOptions[nameof(JwtIssuerOptions.Audience)],
-
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = _signingKey,
-
-                    RequireExpirationTime = false,
-                    ValidateLifetime = false,
-                    //ClockSkew = TimeSpan.Zero
-                };
-          
-            app.UseJwtBearerAuthentication(new JwtBearerOptions
+            if (env.IsDevelopment())
             {
-            AutomaticAuthenticate = true,
-            AutomaticChallenge = true,
-            TokenValidationParameters = tokenValidationParameters
-            });
+                app.UseDeveloperExceptionPage();
+            }
+
+            app.UseAuthentication();
+            //app.UseMvc();
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
             //app.UseMvc();
-           
+
         }
     }
 }

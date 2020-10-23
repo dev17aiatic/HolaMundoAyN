@@ -4,7 +4,7 @@ using ServiceStack.FluentValidation.Attributes;
 
 namespace appAngular.viewIdentity
 {
-    //[Validator(typeof(RegistrationViewModelValidator))]
+    [Validator(typeof(RegistrationViewModelValidator))]
     public class RegistrationViewModel
     {
         public string Email { get; set; }
