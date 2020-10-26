@@ -78,8 +78,10 @@ namespace appAngular.Controllers
                     var tokenHandler = new JwtSecurityTokenHandler();
                     var createdToken = tokenHandler.CreateToken(tokenDescriptor);
                     var tokenFinal = tokenHandler.WriteToken(createdToken);
+                    var json = JsonConvert.SerializeObject(tokenFinal);
 
-                    return new OkObjectResult(tokenFinal);
+                    // return new OkObjectResult(tokenFinal);
+                    return new OkObjectResult(json);
                 }
             }
             return new ObjectResult("DENIED");

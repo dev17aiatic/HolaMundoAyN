@@ -163,12 +163,10 @@ namespace appAngular
             {
                 options.AddPolicy("ApiUser", policy => policy.RequireClaim(Constants.Strings.JwtClaimIdentifiers.Rol, Constants.Strings.JwtClaims.ApiAccess));
             });*/
+            services.AddAuthorization();
 
 
             services.AddMvc();
-            //app.UseDefaultFiles();
-            //app.UseStaticFiles();
-            //app.UseMvc();
            
         }
 
@@ -207,9 +205,10 @@ namespace appAngular
             {
                 app.UseSpaStaticFiles();
             }
+            
 
             app.UseRouting();
-
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
@@ -238,10 +237,11 @@ namespace appAngular
 
             app.UseAuthentication();
             //app.UseMvc();
-
+            app.UseMvc();
             app.UseDefaultFiles();
             app.UseStaticFiles();
-            //app.UseMvc();
+
+
 
         }
     }
