@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using Microsoft.IdentityModel.Tokens;
 using appAngular.Identity;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Identity;
 
 namespace appAngular.Controllers
 {
@@ -20,56 +21,68 @@ namespace appAngular.Controllers
     public class AuthController : Controller
     {
         private readonly IConfiguration _configuration;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly SignInManager<AppUser> _signInManager;
 
-        public AuthController(IConfiguration configuration)
+        public AuthController(IConfiguration configuration, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
         {
             _configuration = configuration;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         [HttpPost]
         [Route("[action]")]
-        public IActionResult Login([FromBody]CredentialsViewModel model)
+        public async Task<IActionResult> LoginAsync([FromBody]CredentialsViewModel model)
         {
             // Tu código para validar que el usuario ingresado es válido
 
             // Asumamos que tenemos un usuario válido
-            var user = new AppUser
+            /*var user = new AppUser
             {
                 UserName = "Eduardo",
                 Email = "admin@kodoti.com",
                 //UserId = "a79b2e64-a4de-4f3a-8cf6-a68ba400db24"
-            };
-
-            // Leemos el secret_key desde nuestro appseting
-            var secretKey = _configuration.GetValue<string>("SecretKey");
-            var key = Encoding.ASCII.GetBytes(secretKey);
-
-            // Creamos los claims (pertenencias, características) del usuario
-            /*var claims = new[]
+            };*/
+            var user = await _userManager.FindByEmailAsync(model.UserName);
+            if (user != null)
             {
-             new Claim("UserData", JsonConvert.SerializeObject(user)),
-            new Claim(ClaimTypes.NameIdentifier, user.UserId),
-            new Claim(ClaimTypes.Email, user.Email)
-        };*/
+                var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
+                if (result.Succeeded)
+                {
+                    // Leemos el secret_key desde nuestro appseting
+                    var secretKey = _configuration.GetValue<string>("SecretKey");
+                    var key = Encoding.ASCII.GetBytes(secretKey);
 
-            ClaimsIdentity claimsIdentity = new ClaimsIdentity(new Claim[]{
+                    // Creamos los claims (pertenencias, características) del usuario
+                    /*var claims = new[]
+                    {
+                     new Claim("UserData", JsonConvert.SerializeObject(user)),
+                    new Claim(ClaimTypes.NameIdentifier, user.UserId),
+                    new Claim(ClaimTypes.Email, user.Email)
+                };*/
+
+                    ClaimsIdentity claimsIdentity = new ClaimsIdentity(new Claim[]{
                  new Claim(ClaimTypes.NameIdentifier, user.UserName),
                      new Claim(ClaimTypes.Email, user.Email)
                 });
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = claimsIdentity,
-                // Nuestro token va a durar un día
-                Expires = DateTime.UtcNow.AddDays(1),
-                // Credenciales para generar el token usando nuestro secretykey y el algoritmo hash 256
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
+                    var tokenDescriptor = new SecurityTokenDescriptor
+                    {
+                        Subject = claimsIdentity,
+                        // Nuestro token va a durar un día
+                        Expires = DateTime.UtcNow.AddDays(1),
+                        // Credenciales para generar el token usando nuestro secretykey y el algoritmo hash 256
+                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                    };
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var createdToken = tokenHandler.CreateToken(tokenDescriptor);
-            var tokenFinal = tokenHandler.WriteToken(createdToken);
+                    var tokenHandler = new JwtSecurityTokenHandler();
+                    var createdToken = tokenHandler.CreateToken(tokenDescriptor);
+                    var tokenFinal = tokenHandler.WriteToken(createdToken);
 
-            return new OkObjectResult (tokenFinal);
+                    return new OkObjectResult(tokenFinal);
+                }
+            }
+            return new ObjectResult("DENIED");
         }
     }
 }
