@@ -32,7 +32,7 @@ import { SidebarModule } from './sidebar/sidebar.module';
 
     RouterModule.forRoot([
 
-      { path: '', redirectTo: 'index', pathMatch: 'full' },
+      //{ path: '', redirectTo: 'index', pathMatch: 'full' },
 
 
       /*{ path: '', component: HomeComponent, pathMatch: 'full' },      
@@ -52,10 +52,6 @@ import { SidebarModule } from './sidebar/sidebar.module';
           path: '',
           loadChildren: './layouts/admin-layout/admin-layout.module#AdminLayoutModule'
       }]},
-      {
-        path: '**',
-        redirectTo: 'dashboard'
-      }
       
     ], {useHash:true}),
 

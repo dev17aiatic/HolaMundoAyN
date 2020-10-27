@@ -17,6 +17,9 @@ import { MapsComponent } from '../../maps/maps.component';
 import { NotificationsComponent } from '../../notifications/notifications.component';
 import { UpgradeComponent } from '../../upgrade/upgrade.component';
 
+import { LoginComponent} from '../../start/login/login.component';
+import { RegistroComponent} from '../../start/registro/registro.component';
+
 
 @NgModule({
   imports: [
@@ -34,7 +37,9 @@ import { UpgradeComponent } from '../../upgrade/upgrade.component';
     IconsComponent,
     MapsComponent,
     NotificationsComponent,
-    UpgradeComponent
+    UpgradeComponent,
+    LoginComponent,
+    RegistroComponent,
   ]
 })
 
