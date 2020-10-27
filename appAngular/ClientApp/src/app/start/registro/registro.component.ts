@@ -8,7 +8,7 @@ import { UserServiceService } from '../../services/user-service.service';
 @Component({
   selector: 'app-registro',
   templateUrl: './registro.component.html',
-  styleUrls: ['./registro.component.css']
+  styleUrls: ['./registro.component.scss']
 })
 export class RegistroComponent implements OnInit {
   errors: string;  
@@ -29,12 +29,12 @@ export class RegistroComponent implements OnInit {
      this.errors='';
      if(valid)
      {
-         this.userService.register(value.email,value.password,value.firstName,value.lastName,value.location)
-                   .finally(() => this.isRequesting = false)
+
+         this.userService.registrar(value)
                    .subscribe(
-                     result  => {if(result){
-                         this.router.navigate(['/login'],{queryParams: {brandNew: true,email:value.email}});                         
-                     }},
+                     result  => {
+                       console.log(result);
+                     },
                      errors =>  this.errors = errors);
      }      
   }  
