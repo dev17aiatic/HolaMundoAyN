@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Ilogin } from '../interfaces/ilogin';
 import { Iregistro } from '../interfaces/iregistro';
 import { ConfigServiceService} from './config-service.service';
 
@@ -19,16 +20,18 @@ export class UserServiceService {
     var lastName =usuario.lastName;
     var location = usuario.location;
     let body = JSON.stringify({email, password, firstName, lastName,location });
-    var body2 = {
-      "email": "carlos2@gmail.com",
-      "password": "pa55ssword",
-      "firstName": "Marko",
-      "lastName": "zucaritos",
-      "location":"mi casa"
-  };
     console.log(body);
     let headers = {headers: { 'Content-Type': 'application/json' }};
     //let options = new RequestOptions({ headers: headers });
-    return this.http.post('https://localhost:44392/api/accounts', body, headers);
+    return this.http.post( this.cfg.getApiURI() + '/accounts', body, headers);
+  }
+  login(usuario: Ilogin){
+    var userName = usuario.email;
+    var password = usuario.password;
+    let body = JSON.stringify({userName, password});
+    console.log(body);
+    let headers = {headers: { 'Content-Type': 'application/json' }};
+
+    return this.http.post(this.cfg.getApiURI()+'/auth/login', body, headers);
   }
 }

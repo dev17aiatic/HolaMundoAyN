@@ -29,7 +29,6 @@ export class RegistroComponent implements OnInit {
      this.errors='';
      if(valid)
      {
-
          this.userService.registrar(value)
                    .subscribe(
                      result  => {

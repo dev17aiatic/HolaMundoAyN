@@ -84,7 +84,8 @@ namespace appAngular.Controllers
                     return new OkObjectResult(json);
                 }
             }
-            return new ObjectResult("DENIED");
+            return Unauthorized();
+            //return new ObjectResult("DENIED");
         }
     }
 }
