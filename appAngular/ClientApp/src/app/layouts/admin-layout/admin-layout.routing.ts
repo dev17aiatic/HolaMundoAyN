@@ -11,16 +11,17 @@ import { UpgradeComponent } from '../../upgrade/upgrade.component';
 
 import { LoginComponent} from '../../start/login/login.component';
 import { RegistroComponent} from '../../start/registro/registro.component';
+import { NavGuardGuard } from 'src/app/guard/nav-guard.guard';
 
 export const AdminLayoutRoutes: Routes = [
-    { path: 'dashboard',      component: HomeComponent },
-    { path: 'user',           component: UserComponent },
-    { path: 'table',          component: TablesComponent },
-    { path: 'typography',     component: TypographyComponent },
-    { path: 'icons',          component: IconsComponent },
-    { path: 'maps',           component: MapsComponent },
-    { path: 'notifications',  component: NotificationsComponent },
-    { path: 'upgrade',        component: UpgradeComponent },
-    { path: 'login',          component: LoginComponent},
-    { path: 'registro',       component: RegistroComponent},
+    { path: 'dashboard',      component: HomeComponent,             canActivate: [NavGuardGuard]},
+    { path: 'user',           component: UserComponent,             canActivate: [NavGuardGuard] },
+    { path: 'table',          component: TablesComponent,           canActivate: [NavGuardGuard] },
+    { path: 'typography',     component: TypographyComponent,       canActivate: [NavGuardGuard] },
+    { path: 'icons',          component: IconsComponent,            canActivate: [NavGuardGuard] },
+    { path: 'maps',           component: MapsComponent,             canActivate: [NavGuardGuard] },
+    { path: 'notifications',  component: NotificationsComponent,    canActivate: [NavGuardGuard] },
+    { path: 'upgrade',        component: UpgradeComponent,          canActivate: [NavGuardGuard] },
+    { path: 'login',          component: LoginComponent,            },
+    { path: 'registro',       component: RegistroComponent,         },
 ];

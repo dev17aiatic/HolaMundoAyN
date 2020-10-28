@@ -10,8 +10,17 @@ import { ConfigServiceService} from './config-service.service';
 })
 export class UserServiceService {
 
+  private _loggedIn = false;
+  public get loggedIn() {
+    return this._loggedIn;
+  }
+  public set loggedIn(value) {
+    this._loggedIn = value;
+  }
 
-  constructor(private http: HttpClient, private cfg: ConfigServiceService) { }  
+  constructor(private http: HttpClient, private cfg: ConfigServiceService) { 
+    this.loggedIn = !!localStorage.getItem('auth_token');
+  }  
 
   registrar(usuario : Iregistro){
     var email =usuario.email;

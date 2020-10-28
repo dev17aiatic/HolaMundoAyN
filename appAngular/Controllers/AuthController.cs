@@ -85,7 +85,8 @@ namespace appAngular.Controllers
                 }
             }
             //return Unauthorized();
-            return new ObjectResult("DENEGADO");
+            var jsonError = JsonConvert.SerializeObject("DENEGADO");
+            return new OkObjectResult(jsonError);
         }
     }
 }

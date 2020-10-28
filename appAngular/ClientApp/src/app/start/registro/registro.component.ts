@@ -32,7 +32,9 @@ export class RegistroComponent implements OnInit {
          this.userService.registrar(value)
                    .subscribe(
                      result  => {
+                       if (result){ 
                        console.log(result);
+                      }
                      },
                      errors =>  this.errors = errors);
      }      

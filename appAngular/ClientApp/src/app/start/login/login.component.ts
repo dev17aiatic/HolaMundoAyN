@@ -45,16 +45,27 @@ export class LoginComponent implements OnInit {
     this.isRequesting = true;
     this.errors='';
     if (valid) {
-      this.userService.login(value)        
+      this.userService.login(value)  
         .subscribe(
-        result => {         
+        result => {    
+          this.isRequesting=false;     
+          //console.log(result.toString());
           if (result) {
             console.log(result.toString());
+            if (result.toString()== "DENEGADO"){
+              this.errors = "Usuario o Contraseña incorrectos";
+            }else{ 
             localStorage.setItem('auth_token', result.toString());
+            this.userService.loggedIn = true;
+            console.log(this.userService.loggedIn);
              //this.router.navigate(['/dashboard/home']);             
+            }
           }
         },
-        error => this.errors = error);
+        errors => {
+          this.isRequesting=false;
+          this.errors = errors; 
+          console.log(errors);});
     }
   }
 
