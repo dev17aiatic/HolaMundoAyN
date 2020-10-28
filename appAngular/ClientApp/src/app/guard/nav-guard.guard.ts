@@ -8,8 +8,8 @@ import { UserServiceService } from '../services/user-service.service';
 export class NavGuardGuard implements CanActivate{
   constructor( private userSvs: UserServiceService, private router : Router){}
   canActivate(){
-      if (this.userSvs.loggedIn){
-        this.router.navigate(['/dashboard']);
+      if (localStorage.getItem('auth_token')){
+        //this.router.navigate(['/dashboard']);
         return true;
       }
     this.router.navigate(['/login']);

@@ -56,9 +56,11 @@ export class LoginComponent implements OnInit {
               this.errors = "Usuario o Contraseña incorrectos";
             }else{ 
             localStorage.setItem('auth_token', result.toString());
-            this.userService.loggedIn = true;
-            console.log(this.userService.loggedIn);
-             //this.router.navigate(['/dashboard/home']);             
+            //this.userService.loggedIn = true;
+            console.log(this.userService.getloggedIn());
+            console.log(localStorage.getItem('auth_token'));
+
+            this.router.navigate(['/dashboard']);             
             }
           }
         },

@@ -11,15 +11,16 @@ import { ConfigServiceService} from './config-service.service';
 export class UserServiceService {
 
   private _loggedIn = false;
-  public get loggedIn() {
-    return this._loggedIn;
-  }
-  public set loggedIn(value) {
-    this._loggedIn = value;
+  public getloggedIn() : Boolean{
+    if (localStorage.getItem('auth_token')){
+      return true;
+    }
+    return false;
   }
 
   constructor(private http: HttpClient, private cfg: ConfigServiceService) { 
-    this.loggedIn = !!localStorage.getItem('auth_token');
+    //this._loggedIn = !!localStorage.getItem('auth_token');
+
   }  
 
   registrar(usuario : Iregistro){
@@ -42,5 +43,8 @@ export class UserServiceService {
     let headers = {headers: { 'Content-Type': 'application/json' }};
 
     return this.http.post(this.cfg.getApiURI()+'/auth/login', body, headers);
+  }
+  logout(){
+    localStorage.removeItem('auth_token');
   }
 }
