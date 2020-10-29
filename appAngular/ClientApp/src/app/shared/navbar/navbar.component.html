@@ -29,14 +29,12 @@
                     <a class="nav-link" routerLink="/login">
                         <i class="material-icons">Iniciar Sesion</i>
                     </a>
-                </li>
-                <form class="navbar-form" (ngSubmit)="salir()">
+                </li>            
                     <div class="input-group no-border">                        
-                        <button mat-raised-button type="submit"  class="btn btn-white btn-round btn-just-icon">
+                        <button mat-raised-button type="button" (click)="salir()"  class="btn btn-white btn-round btn-just-icon">
                             Salir
                         </button>
-                    </div>
-                </form>
+                    </div>                
                 <li class="nav-item dropdown">
                     <a class="nav-link" href="javascript:void(0)" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="material-icons">notifications</i>

@@ -2,6 +2,7 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 import { ROUTES } from '../../sidebar/sidebar.component';
 import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
 import { UserServiceService } from 'src/app/services/user-service.service';
+import { Router } from '@angular/router';
 
 @Component({
     // moduleId: module.id,
@@ -15,7 +16,7 @@ export class NavbarComponent implements OnInit{
     private toggleButton: any;
     private sidebarVisible: boolean;
 
-    constructor(location: Location,  private element: ElementRef, private userSvs : UserServiceService) {
+    constructor(location: Location,  private element: ElementRef, private userSvs : UserServiceService, private router: Router) {
       this.location = location;
           this.sidebarVisible = false;
     }
@@ -67,5 +68,6 @@ export class NavbarComponent implements OnInit{
     salir(){
         console.log("dio clic");
         this.userSvs.logout();
+        this.router.navigate(['/login']);
     }
 }
