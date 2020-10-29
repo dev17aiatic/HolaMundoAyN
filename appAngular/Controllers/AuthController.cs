@@ -79,7 +79,7 @@ namespace appAngular.Controllers
                     var createdToken = tokenHandler.CreateToken(tokenDescriptor);
                     var tokenFinal = tokenHandler.WriteToken(createdToken);
                     var response = new { 
-                    id = _userManager.GetUserIdAsync(user),
+                    id = _userManager.GetUserIdAsync(user).Result,
                     auth_token = tokenFinal
                     };
                     var json = JsonConvert.SerializeObject(response);

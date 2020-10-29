@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Ilogin } from '../interfaces/ilogin';
 import { Iregistro } from '../interfaces/iregistro';
+import { IToken } from '../interfaces/iToken';
 import { ConfigServiceService} from './config-service.service';
 
 
@@ -42,9 +43,26 @@ export class UserServiceService {
     console.log(body);
     let headers = {headers: { 'Content-Type': 'application/json' }};
 
-    return this.http.post(this.cfg.getApiURI()+'/auth/login', body, headers);
+    return this.http.post<IToken>(this.cfg.getApiURI()+'/auth/login', body, headers);
   }
   logout(){
     localStorage.removeItem('auth_token');
   }
+  profile(){
+    var theid = localStorage.getItem('id');
+    var token = localStorage.getItem('auth_token');
+    let headers = {headers: { 'Authorization':'Bearer '+token}};    
+    return this.http.get<profile>(this.cfg.getApiURI()+'/profile/'+theid, headers);
+  }
+}
+export interface profile{
+Identity : identity;
+Location: string;
+
+}
+export interface identity{
+  FirstName: string;
+  LastName: string;  
+  UserName: string;
+
 }

@@ -11,12 +11,14 @@ using Newtonsoft.Json;
 using appAngular.viewIdentity;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
-using appAngular.helpers;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace appAngular.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ProfileController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -51,7 +53,7 @@ namespace appAngular.Controllers
                 jobSeeker = data,
                 usuario = user
             };
-            var json = JsonConvert.SerializeObject(response);
+            var json = JsonConvert.SerializeObject(data);
 
 
             if (json == null)
@@ -78,11 +80,19 @@ namespace appAngular.Controllers
             }
             //_context.Entry(jobSeekercs).State = EntityState.Modified;
 
-            var userIdentity = _mapper.Map<AppUser>(model);
-            var result = await _userManager.UpdateAsync(userIdentity);
-            if (!result.Succeeded) return new BadRequestObjectResult(Errors.AddErrorsToModelState(result, ModelState));
-            var jobseeks = _context.JobSeekercs.Where(x => x.IdentityId == id).ToList();
-            jobseeks[0].Location = model.Location;
+
+            var jobSeekercs = from s in _context.JobSeekercs select s;
+            var jobseeks = jobSeekercs.Where(s => s.IdentityId.Equals(id)).FirstOrDefault();
+            if (jobseeks != null)
+            {
+                jobseeks.Location = model.Location;
+                var Auser = new AppUser();
+                Auser.FirstName = model.FirstName;
+                Auser.LastName = model.LastName;
+                jobseeks.Identity = Auser;
+
+                _context.Entry(jobseeks).State = EntityState.Modified;
+            }
 
 
             try
