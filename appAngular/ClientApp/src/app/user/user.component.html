@@ -1,4 +1,5 @@
-<div class="main-content" >
+<div id="loader" *ngIf="cargando">Cargando<img src="assets/img/loader-preview.svg" alt="loading" ></div>
+<div class="main-content">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-8">
@@ -34,8 +35,9 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
+                                        <label for="password">Por favor si no deseas cambiar la contraseña dejala en blanco</label>
                                         <label for="password">Password</label>
-                                        <input id="password" type="password" disabled name="password" class="form-control" placeholder="Password" value="abcdeess" ngModel>                                        
+                                        <input id="password" type="password" name="password" class="form-control" minlength="6" placeholder="Password" ngModel>                                        
                                     </div>
                                 </div>
                             </div>

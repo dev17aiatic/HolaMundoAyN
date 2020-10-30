@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using appAngular.helpers;
 
+
 namespace appAngular.Controllers
 {
     [Route("api/[controller]")]
@@ -25,14 +26,16 @@ namespace appAngular.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
         private readonly UserManager<AppUser> _userManager;
+        private IPasswordHasher<AppUser> _passwordHasher;
 
 
 
-        public ProfileController(ApplicationDbContext context, UserManager<AppUser> userManager, IMapper mapper)
+        public ProfileController(ApplicationDbContext context, UserManager<AppUser> userManager,IPasswordHasher<AppUser> passwordHasher, IMapper mapper)
         {
             _context = context;
             _userManager = userManager;
             _mapper = mapper;
+            _passwordHasher = passwordHasher;
         }
 
         // GET: api/Profile
@@ -86,7 +89,11 @@ namespace appAngular.Controllers
             var jobseeks = jobSeekercs.Where(s => s.IdentityId.Equals(id)).FirstOrDefault();
             AppUser use = await _userManager.FindByIdAsync(id);
             use.FirstName = model.FirstName;
-            use.LastName = model.LastName;            
+            use.LastName = model.LastName;    
+            if (model.Password != "nochange")
+            {
+                use.PasswordHash = _passwordHasher.HashPassword(use, model.Password);
+            }
             jobseeks.Location = model.Location;
             jobseeks.IdentityId = id;
             jobseeks.Id = jobseeks.Id;
