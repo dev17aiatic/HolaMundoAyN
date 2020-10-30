@@ -36,6 +36,8 @@ export class UserComponent implements OnInit {
     var changeP = false;
     if (!value.password || value.password == "" || value.password == null){
       value.password = "nochange";
+      changeP = false;
+    }else{
       changeP = true;
     }
     this.isRequesting = true;     

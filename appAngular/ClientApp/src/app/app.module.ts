@@ -17,6 +17,9 @@ import { FooterModule } from './shared/footer/footer.module';
 import { SidebarModule } from './sidebar/sidebar.module';
 
 
+import { CommonModule } from '@angular/common';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,6 +31,7 @@ import { SidebarModule } from './sidebar/sidebar.module';
     FormsModule,
     NgbModule,
     BrowserAnimationsModule,
+    CommonModule,
 
 
     RouterModule.forRoot([

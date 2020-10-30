@@ -46,13 +46,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="first-name">First name</label>
-						                <input id="first-name" type="text" required name="firstName" class="form-control" placeholder="Your first name" value="{{nombre}}" tmFocus ngModel>
+						                <input id="first-name" type="text" required name="firstName" class="form-control" placeholder="Your first name" [(ngModel)]="nombre" tmFocus ngModel>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="last-name">Last name</label>
-                                        <input id="last-name" type="text" required name="lastName" class="form-control" placeholder="Your last name" value="{{apellido}}" ngModel>
+                                        <input id="last-name" type="text" required name="lastName" class="form-control" placeholder="Your last name" [(ngModel)]="apellido" ngModel>
                                     </div>
                                 </div>
                             </div>
@@ -61,7 +61,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label>Address</label>
-						                <input id="location" type="text" required name="location" class="form-control" placeholder="Location" value="{{direccion}}" ngModel>                                        
+						                <input id="location" type="text" required name="location" class="form-control" placeholder="Location" [(ngModel)]="direccion" ngModel>                                        
                                     </div>
                                 </div>
                             </div>
