@@ -13,6 +13,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using appAngular.helpers;
 
 namespace appAngular.Controllers
 {
@@ -83,17 +84,17 @@ namespace appAngular.Controllers
 
             var jobSeekercs = from s in _context.JobSeekercs select s;
             var jobseeks = jobSeekercs.Where(s => s.IdentityId.Equals(id)).FirstOrDefault();
-            if (jobseeks != null)
-            {
-                jobseeks.Location = model.Location;
-                var Auser = new AppUser();
-                Auser.FirstName = model.FirstName;
-                Auser.LastName = model.LastName;
-                jobseeks.Identity = Auser;
+            AppUser use = await _userManager.FindByIdAsync(id);
+            use.FirstName = model.FirstName;
+            use.LastName = model.LastName;            
+            jobseeks.Location = model.Location;
+            jobseeks.IdentityId = id;
+            jobseeks.Id = jobseeks.Id;
+            IdentityResult result = await _userManager.UpdateAsync(use);
+            _context.Entry(jobseeks).State = EntityState.Modified;   
 
-                _context.Entry(jobseeks).State = EntityState.Modified;
-            }
 
+            if (result.Succeeded) { 
 
             try
             {
@@ -109,6 +110,11 @@ namespace appAngular.Controllers
                 {
                     throw;
                 }
+            }
+            }
+            else
+            {
+                return new BadRequestObjectResult(Errors.AddErrorsToModelState(result, ModelState));
             }
 
             return NoContent();
