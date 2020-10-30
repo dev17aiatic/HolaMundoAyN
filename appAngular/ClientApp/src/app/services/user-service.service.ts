@@ -54,6 +54,21 @@ export class UserServiceService {
     let headers = {headers: { 'Authorization':'Bearer '+token}};    
     return this.http.get<profile>(this.cfg.getApiURI()+'/profile/'+theid, headers);
   }
+  editar(usuario : Iregistro){
+    var theid = localStorage.getItem('id');
+    var token = localStorage.getItem('auth_token');
+    let headers = {headers: { 'Authorization':'Bearer '+token, 'Content-Type': 'application/json'}};  
+    
+    var email =usuario.email;
+    var password =usuario.password;
+    var firstName =usuario.firstName;
+    var lastName =usuario.lastName;
+    var location = usuario.location;
+    let body = JSON.stringify({email, password, firstName, lastName,location });
+    console.log(body);    
+    //let options = new RequestOptions({ headers: headers });
+    return this.http.put( this.cfg.getApiURI() + '/profile/'+theid, body, headers);
+  }
 }
 export interface profile{
 Identity : identity;

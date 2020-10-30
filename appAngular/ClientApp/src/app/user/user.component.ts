@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { UserServiceService} from '../services/user-service.service';
 
+import { Iregistro } from '../interfaces/iregistro';
+import { timeout } from 'rxjs/operators';
+
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
@@ -11,6 +14,7 @@ export class UserComponent implements OnInit {
   public apellido;
   public email;
   public direccion;
+  public isRequesting: boolean;
 
   constructor(private userSvs: UserServiceService) { }
 
@@ -22,6 +26,23 @@ export class UserComponent implements OnInit {
       this.email = x[0].Identity.Email;
       this.direccion = x[0].Location;
     });
+  }
+  editar({ value, valid }: { value: Iregistro, valid: boolean }){
+    value.email = this.email;
+    value.password = "blablabla";
+    this.isRequesting = true;     
+     if(valid)
+     {
+         this.userSvs.editar(value)
+                   .subscribe(
+                     result  => {
+                       alert("Cambios relizados satisfactoriamente");
+                       console.log(result);
+                       //timeout(4500);        
+                       window.location.reload();
+                     },
+                     errors => console.log('Error-> ', errors));
+     }      
   }
 
 }

@@ -4,10 +4,10 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="header">
-                        <h4 class="title">Edit Profile</h4>
+                        <h4 class="title">Perfil</h4>
                     </div>
                     <div class="content">
-                        <form>
+                        <form #f="ngForm" novalidate (ngSubmit)="editar(f)">
                             <div class="row">
                                 <!--<div class="col-md-5">
                                     <div class="form-group">
@@ -18,13 +18,24 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label>Username</label>
-                                        <input type="text" class="form-control" placeholder="Username" value="{{email}}">
+                                        <input type="text" disabled class="form-control" required placeholder="Username" value="{{email}}" ngModel>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1">Email address</label>
+                                       <!-- <label for="exampleInputEmail1">Email address</label>
                                         <input type="email" class="form-control" placeholder="Email" value="{{email}}">
+                                        <span>{{email}}</span>-->
+                                        <label for="email">Email</label>
+						                <input id="email" type="text" disabled name="email" class="form-control" placeholder="Email" ngModel value="{{email}}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="password">Password</label>
+                                        <input id="password" type="password" disabled name="password" class="form-control" placeholder="Password" value="abcdeess" ngModel>                                        
                                     </div>
                                 </div>
                             </div>
@@ -32,14 +43,14 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>First Name</label>
-                                        <input type="text" class="form-control" placeholder="Company" value="{{nombre}}">
+                                        <label for="first-name">First name</label>
+						                <input id="first-name" type="text" required name="firstName" class="form-control" placeholder="Your first name" value="{{nombre}}" tmFocus ngModel>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Last Name</label>
-                                        <input type="text" class="form-control" placeholder="Last Name" value="{{apellido}}">
+                                        <label for="last-name">Last name</label>
+                                        <input id="last-name" type="text" required name="lastName" class="form-control" placeholder="Your last name" value="{{apellido}}" ngModel>
                                     </div>
                                 </div>
                             </div>
@@ -48,7 +59,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label>Address</label>
-                                        <input type="text" class="form-control" placeholder="Home Address" value="{{direccion}}">
+						                <input id="location" type="text" required name="location" class="form-control" placeholder="Location" value="{{direccion}}" ngModel>                                        
                                     </div>
                                 </div>
                             </div>
@@ -81,14 +92,14 @@
                                         <textarea rows="5" class="form-control" placeholder="Here can be your description" value="Mike">Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo.</textarea>
                                     </div>
                                 </div>
-                            </div>
-                            <button type="submit" class="btn btn-info btn-fill pull-right">Update Profile</button>
-                            <div class="clearfix"></div>-->
+                            </div>-->
+                            <button type="submit" class="btn btn-info btn-fill pull-right" [disabled]="f.invalid || isRequesting">Actualizar perfil</button>
+                            <div class="clearfix"></div>
                         </form>
                     </div>
                 </div>
             </div>
-            <!--<div class="col-md-4">
+            <div class="col-md-4">
                 <div class="card card-user">
                     <div class="image">
                         <img src="https://ununsplash.imgix.net/photo-1431578500526-4d9613015464?fit=crop&fm=jpg&h=300&q=75&w=400" alt="..."/>
@@ -98,14 +109,13 @@
                             <a href="#">
                                 <img class="avatar border-gray" src="assets/img/faces/face-3.jpg" alt="..."/>
 
-                                <h4 class="title">Mike Andrew<br />
-                                    <small>michael24</small>
+                                <h4 class="title">{{nombre}} {{apellido}}><br />
+                                    <small>{{email}}</small>
                                 </h4>
                             </a>
                         </div>
-                        <p class="description text-center"> "Lamborghini Mercy <br>
-                            Your chick she so thirsty <br>
-                            I'm in that two seat Lambo"
+                        <p class="description text-center"> Direccion:  <br>
+                            {{direccion}}
                         </p>
                     </div>
                     <hr>
