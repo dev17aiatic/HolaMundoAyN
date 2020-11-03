@@ -7,6 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { Ilogin } from '../../interfaces/ilogin';
 import { UserServiceService } from '../../services/user-service.service';
+import { interval} from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -58,7 +59,7 @@ export class LoginComponent implements OnInit {
              var token = result.auth_token;
              var id = result.id;
             localStorage.setItem('auth_token', token);
-            localStorage.setItem('id', id);
+            localStorage.setItem('id', id);            
 
             //this.userService.loggedIn = true;
 

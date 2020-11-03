@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import 'jquery';
+import { interval} from 'rxjs';
 
 declare const $: any;
 declare interface RouteInfo {
@@ -16,8 +17,9 @@ export const ROUTES: RouteInfo[] = [
     { path: '/icons', title: 'Icons',  icon:'pe-7s-science', class: '' },
     { path: '/maps', title: 'Maps',  icon:'pe-7s-map-marker', class: '' },
     { path: '/notifications', title: 'Notifications',  icon:'pe-7s-bell', class: '' },
-    { path: '/upgrade', title: 'Upgrade to PRO',  icon:'pe-7s-rocket', class: 'active-pro' },
+    //{ path: '/upgrade', title: 'Upgrade to PRO',  icon:'pe-7s-rocket', class: 'active-pro' },
 ];
+
 
 @Component({
   selector: 'app-sidebar',
@@ -25,8 +27,16 @@ export const ROUTES: RouteInfo[] = [
 })
 export class SidebarComponent implements OnInit {
   menuItems: any[];
+  public sesion: boolean;
 
-  constructor() { }
+  constructor() { 
+    const cont = interval(1000);
+    cont.subscribe((n) => {
+      //console.log('segundos', n);
+      this.isSesion();
+      //this.userService.logout();
+    });
+  }
 
   ngOnInit() {
     this.menuItems = ROUTES.filter(menuItem => menuItem);
@@ -37,4 +47,10 @@ export class SidebarComponent implements OnInit {
       }
       return true;
   };
+  isSesion(){
+    this.sesion = false;
+    if (localStorage.getItem('auth_token')){
+      this.sesion = true;      
+    }
+  }
 }

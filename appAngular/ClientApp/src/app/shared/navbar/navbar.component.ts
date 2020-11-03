@@ -3,6 +3,7 @@ import { ROUTES } from '../../sidebar/sidebar.component';
 import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
 import { UserServiceService } from 'src/app/services/user-service.service';
 import { Router } from '@angular/router';
+import { interval} from 'rxjs';
 
 @Component({
     // moduleId: module.id,
@@ -15,10 +16,19 @@ export class NavbarComponent implements OnInit{
     location: Location;
     private toggleButton: any;
     private sidebarVisible: boolean;
+    public sesion: boolean;
 
-    constructor(location: Location,  private element: ElementRef, private userSvs : UserServiceService, private router: Router) {
+    constructor(location: Location,  private element: ElementRef, private userSvs : UserServiceService, private router: Router)
+     {
       this.location = location;
           this.sidebarVisible = false;
+
+          const cont = interval(1000);
+          cont.subscribe((n) => {
+            //console.log('segundos', n);
+            this.isSesion();
+            //this.userService.logout();
+          });
     }
 
     ngOnInit(){
@@ -70,4 +80,10 @@ export class NavbarComponent implements OnInit{
         this.userSvs.logout();
         this.router.navigate(['/login']);
     }
+    isSesion(){
+        this.sesion = false;
+        if (localStorage.getItem('auth_token')){
+          this.sesion = true;      
+        }
+      }
 }

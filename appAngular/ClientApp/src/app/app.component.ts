@@ -1,5 +1,6 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnDestroy, OnInit} from '@angular/core';
 import { LocationStrategy, PlatformLocation, Location } from '@angular/common';
+import { UserServiceService } from './services/user-service.service';
 
 
 @Component({
@@ -7,10 +8,15 @@ import { LocationStrategy, PlatformLocation, Location } from '@angular/common';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   //title = 'app';
 
-    constructor(public location: Location) {}
+    constructor(public location: Location, private userSvs: UserServiceService) {}
+  ngOnDestroy(): void {
+    alert("Sesion cerrada");
+    this.userSvs.logout();
+    throw new Error('Method not implemented.');
+  }
     ngOnInit() {
     }
     

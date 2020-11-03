@@ -9,7 +9,7 @@ import { timeout } from 'rxjs/operators';
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.css']
 })
-export class UserComponent implements OnInit {
+export class UserComponent implements OnInit{
   public nombre;
   public apellido;
   public email;
@@ -17,7 +17,7 @@ export class UserComponent implements OnInit {
   public isRequesting: boolean;
   public cargando = true;
 
-  constructor(private userSvs: UserServiceService) { }
+  constructor(private userSvs: UserServiceService) { }  
 
   ngOnInit() {
     this.userSvs.profile().subscribe(x =>{

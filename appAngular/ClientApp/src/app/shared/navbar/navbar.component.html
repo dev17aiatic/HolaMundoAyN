@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default navbar-expand-lg">
+<nav class="navbar navbar-default navbar-expand-lg" *ngIf="sesion; else noSesion">
     <div class="container-fluid">
         <div class="navbar-wrapper navbar-header">
           <a class="navbar-brand" href="javascript:void(0)">{{getTitle()}}</a>
@@ -10,7 +10,7 @@
             <span class="navbar-toggler-icon icon-bar"></span>
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="navigation">
-            <form class="navbar-form">
+            <!--<form class="navbar-form">
                 <div class="input-group no-border">
                     <input type="text" value="" class="form-control" placeholder="Search...">
                     <button mat-raised-button type="submit" class="btn btn-white btn-round btn-just-icon">
@@ -18,24 +18,14 @@
                         <div class="ripple-container"></div>
                     </button>
                 </div>
-            </form>
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" routerLink="/registro">
-                        <i class="material-icons">Registro</i>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" routerLink="/login">
-                        <i class="material-icons">Iniciar Sesion</i>
-                    </a>
-                </li>            
+            </form>-->
+            <ul class="navbar-nav">     
                     <div class="input-group no-border">                        
                         <button mat-raised-button type="button" (click)="salir()"  class="btn btn-white btn-round btn-just-icon">
                             Salir
                         </button>
                     </div>                
-                <li class="nav-item dropdown">
+                <!--<li class="nav-item dropdown">
                     <a class="nav-link" href="javascript:void(0)" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="material-icons">notifications</i>
                         <span class="notification">5</span>
@@ -58,11 +48,45 @@
                             <span class="d-lg-none d-md-block">Account</span>
                         </p>
                     </a>
-                </li>
+                </li>-->
             </ul>
         </div>
     </div>
 </nav>
+
+<ng-template #noSesion>
+    <nav class="navbar navbar-default navbar-expand-lg">
+        <div class="container-fluid">
+            <div class="navbar-wrapper navbar-header">
+              <a class="navbar-brand" href="javascript:void(0)">{{getTitle()}}</a>
+            </div>
+            <button mat-raised-button class="navbar-toggle" data-toggle="collapse" type="button" (click)="sidebarToggle()">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="navbar-toggler-icon icon-bar"></span>
+                <span class="navbar-toggler-icon icon-bar"></span>
+                <span class="navbar-toggler-icon icon-bar"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navigation">
+
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/registro">
+                            <i class="material-icons">Registro</i>
+                        </a>
+                    </li>
+                    <li class="nav-item" >
+                        <a class="nav-link" routerLink="/login">
+                            <i class="material-icons">Iniciar Sesion</i>
+                        </a>
+                    </li>            
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+</ng-template>
+
+
 
 <!--
 
