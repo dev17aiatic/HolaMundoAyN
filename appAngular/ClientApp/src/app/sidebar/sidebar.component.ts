@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import 'jquery';
 import { interval} from 'rxjs';
+import { UserServiceService } from '../services/user-service.service';
 
 declare const $: any;
 declare interface RouteInfo {
@@ -29,7 +31,7 @@ export class SidebarComponent implements OnInit {
   menuItems: any[];
   public sesion: boolean;
 
-  constructor() { 
+  constructor(private userSvs: UserServiceService, private router : Router) { 
     const cont = interval(1000);
     cont.subscribe((n) => {
       //console.log('segundos', n);
@@ -53,4 +55,9 @@ export class SidebarComponent implements OnInit {
       this.sesion = true;      
     }
   }
+  salir(){
+    console.log("dio clic");
+    this.userSvs.logout();
+    this.router.navigate(['/login']);
+}
 }

@@ -1,5 +1,5 @@
 
-<div class="sidebar-wrapper" *ngIf="sesion">
+<div class="sidebar-wrapper" *ngIf="sesion; else noSesion">
     <div class="logo">
         <a href="https://localhost:44392" class="simple-text">
             <div class="logo-img">
@@ -9,7 +9,7 @@
         </a>
     </div>
     <ul class="nav responsive-nav">
-        <li *ngIf="isMobileMenu()">
+        <!--<li *ngIf="isMobileMenu()">
             <a class="dropdown-toggle" data-toggle="dropdown">
                 <i class="fa fa-dashboard"></i>
 				<p class="hidden-lg hidden-md">Dashboard</p>
@@ -66,7 +66,7 @@
             <a>
                 <p>Log out</p>
             </a>
-        </li>
+        </li>-->
         <li class="separator hidden-lg hidden-md" *ngIf="isMobileMenu()"></li>
         <li routerLinkActive="active" *ngFor="let menuItem of menuItems" class="{{menuItem.class}}">
             <a  [routerLink]="[menuItem.path]">
@@ -74,5 +74,42 @@
                 <p>{{menuItem.title}}</p>
             </a>
         </li>
+        <br>
+        <br>
+        <br>
+        <li *ngIf="isMobileMenu()">                     
+                <a>
+                <input type="button" (click)="salir()" value="Salir" style="background-color: transparent;">                                  
+            </a>
+        </li>
     </ul>
 </div>
+
+<ng-template #noSesion>
+    
+<div class="sidebar-wrapper">
+    <div class="logo">
+        <a href="https://localhost:44392" class="simple-text">
+            <div class="logo-img">
+                <img src="https://colegiorafaelaybarra.com/wp/wp-content/uploads/2014/09/CFGM.jpg"/>
+            </div>
+            CFGM
+        </a>
+    </div>
+    <ul class="nav responsive-nav" *ngIf="isMobileMenu()">                
+            <li routerLinkActive="active" class="">
+                <a  [routerLink]="login">
+                    <!--<i class="{{menuItem.icon}}"></i>-->
+                    <p>Iniciar Sesión</p>
+                </a>
+            </li>    
+            <li routerLinkActive="active" class="">
+                <a  [routerLink]="registro">
+                    <!--<i class="{{menuItem.icon}}"></i>-->
+                    <p>Registro</p>
+                </a>
+            </li>      
+    </ul>
+</div>
+
+</ng-template>
